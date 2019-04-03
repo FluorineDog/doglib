@@ -1,5 +1,6 @@
 // limited to C++14
-// since google codejam is limited
+// since google codejam limits
+#pragma once
 #include <functional>
 #include <algorithm>
 
@@ -17,11 +18,11 @@ template <class Graph>
 class EdgeGroup {
   public:
     EdgeGroup(const Graph& graph, int edge_from) : graph_(graph), edge_from_(edge_from) {}
-    Graph::Iterator begin() const{
-        return graph.begin_at(edge_from_);
+    typename Graph::Iterator begin() const {
+        return graph_.begin_at(edge_from_);
     }
-    Graph::Iterator end() const{
-        return graph.end_at(edge_from_);
+    typename Graph::Iterator end() const {
+        return graph_.end_at(edge_from_);
     }
 
   private:
@@ -34,6 +35,7 @@ class DynamicGraph {
     struct EdgeInfo {
         int to;
         int next;
+        EdgeInfo(int to, int next) : to(to), next(next) {}
     };
     std::vector<int> vertex_begs_;
     std::vector<EdgeInfo> edges_;
@@ -49,11 +51,18 @@ class DynamicGraph {
         vertex_begs_[edge_from] = new_slot;
     }
 
-    size_t get_vertex_count() const{
+    //@return: vertex index
+    int new_vertex() {
+        int id = n_vertex();
+        vertex_begs_.emplace_back(-1);
+        return id;
+    }
+
+    size_t n_vertex() const {
         return vertex_begs_.size();
     }
 
-    size_t get_edges_count() const{
+    size_t get_edges_count() const {
         return edges_.size();
     }
 
@@ -63,12 +72,12 @@ class DynamicGraph {
             index_ = edges_[index_].next;
             return *this;
         }
-        bool operator!=(Iterator& that) const{
+        bool operator!=(Iterator& that) const {
             assert(&edges_ == &that.edges_);
             return index_ != that.index_;
         }
 
-        int operator*() const{
+        int operator*() const {
             return edges_[index_].to;
         }
 
@@ -82,13 +91,13 @@ class DynamicGraph {
         int index_;
     };
 
-    EdgeGroup<DynamicGraph> adjacent(int edge_from) const{
+    EdgeGroup<DynamicGraph> adjacent(int edge_from) const {
         return EdgeGroup<DynamicGraph>(*this, edge_from);
     }
 
   private:
     friend class EdgeGroup<DynamicGraph>;
-    Iterator begin_at(int edge_from) const{
+    Iterator begin_at(int edge_from) const {
         return Iterator(edges_, vertex_begs_[edge_from]);
     }
     Iterator end_at(int edge_from) const {
@@ -105,20 +114,20 @@ class StaticGraph {
   public:
     StaticGraph() = default;
     explicit StaticGraph(const DynamicGraph& dyn_graph) {
-        int n_vertex = dyn_graph.get_vertex_count();
+        int n_vertex = dyn_graph.n_vertex();
         vertex_begs_.push_back(0);
         for(int v = 0; v < n_vertex; ++v) {
-            for(auto v_adj: dyn_graph.adjacent(v)){
+            for(auto v_adj : dyn_graph.adjacent(v)) {
                 edges_.push_back(v_adj);
             }
             vertex_begs_.push_back(edges_.size());
         }
     }
 
-    size_t get_vertex_count() const {
+    size_t n_vertex() const {
         return vertex_begs_.size() - 1;
     }
-    size_t get_edges_count() const{
+    size_t get_edges_count() const {
         return edges_.size();
     }
     class Iterator {
@@ -127,7 +136,7 @@ class StaticGraph {
             ++index_;
             return *this;
         }
-        bool operator!=(const Iterator& that) const{
+        bool operator!=(const Iterator& that) const {
             assert(&edges_ == &that.edges_);
             return index_ != that.index_;
         }
@@ -137,23 +146,23 @@ class StaticGraph {
 
       private:
         friend StaticGraph;
-        Iterator(const std::vector<int>& edges, int index) : edges_(edges), index_(index) {}
+        Iterator(const std::vector<int>& edges, int index)
+            : edges_(edges), index_(index) {}
 
       private:
         const std::vector<int>& edges_;
         int index_;
     };
+
   private:
     friend class EdgeGroup<StaticGraph>;
-    Iterator begin_at(int edge_from) const{
+    Iterator begin_at(int edge_from) const {
         return Iterator(edges_, vertex_begs_[edge_from]);
     }
-    Iterator end_at(int edge_from) const{
+    Iterator end_at(int edge_from) const {
         return Iterator(edges_, vertex_begs_[edge_from + 1]);
     }
 };
-
-
 
 }    // namespace graph
 }    // namespace doglib
