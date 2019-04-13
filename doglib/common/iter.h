@@ -1,6 +1,7 @@
 #pragma once
 namespace doglib {
 namespace common {
+
 template <typename T>
 class DataIter {
   public:
@@ -26,6 +27,7 @@ class DataIter {
         --data;
         return std::move(x);
     }
+    using difference_type = ssize_t;
 
     // that's why everyone loves spaceship operator
     bool operator!=(const DataIter<T>& t) const {
@@ -76,6 +78,16 @@ template <typename T>
 auto make_iter(T x) -> DataIter<T> {
     return DataIter<T>(x);
 }
-
 }    // namespace common
 }    // namespace doglib
+
+template <typename T>
+// template <>
+struct std::iterator_traits< doglib::common::DataIter<T>> {
+    using difference_type = ssize_t;
+    using value_type = T;
+    using pointer = T*;
+    using reference = T&;
+    using iterator_category = std::random_access_iterator_tag;
+};
+

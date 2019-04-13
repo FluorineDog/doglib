@@ -21,12 +21,12 @@ class RangeImpl {
 
 template <typename T>
 inline auto Range(T beg, T end) -> impl::RangeImpl<T> {
-    return RangeImpl(beg, end);
+    return impl::RangeImpl<T>(beg, end);
 }
 
 template <typename T>
 inline auto Range(T end) -> impl::RangeImpl<T> {
-    return RangeImpl(T(0), end);
+    return impl::RangeImpl<T>(T(0), end);
 }
 
 }    // namespace std
