@@ -10,3 +10,4 @@
 #include <queue>
 #include <stack>
 #include <cassert>
+#include <functional>

@@ -1,5 +1,7 @@
 #pragma once
+#include <unistd.h>
 #include <type_traits>
+#include <algorithm>
 namespace doglib {
 namespace common {
 
@@ -83,13 +85,14 @@ auto make_iter(T x) -> DataIter<T> {
 }    // namespace common
 }    // namespace doglib
 
+namespace std{
 template <typename T>
 // template <>
-struct std::iterator_traits< doglib::common::DataIter<T>> {
+struct iterator_traits< doglib::common::DataIter<T>> {
     using difference_type = ssize_t;
     using value_type = T;
     using pointer = T*;
     using reference = T&;
     using iterator_category = std::random_access_iterator_tag;
 };
-
+}
