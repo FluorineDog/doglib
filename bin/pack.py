@@ -7,8 +7,13 @@ import os
 import pyperclip
 pattern = re.compile('^#include *"(.*)"')
 did = set()
+doglib_prefix = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+ 
+print(doglib_prefix)
 
 def pack(filename):
+	if filename.startswith("doglib/"):
+		filename = os.path.join(doglib_prefix,  filename)
 	abspath = os.path.abspath(filename)
 	dirname = os.path.dirname(abspath)
 	if abspath in did:
@@ -33,7 +38,8 @@ def pack(filename):
 
 root_filename = sys.argv[1]
 pyperclip.copy(pack(root_filename))
-paste = pyperclip.paste()
-print(paste)
+# paste = pyperclip.paste()
+# print(paste)
+print("done")
 
 
