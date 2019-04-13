@@ -1,5 +1,5 @@
 namespace doglib {
-namespace std {
+namespace common {
 
 template <typename T>
 class DataIter {
