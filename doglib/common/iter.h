@@ -1,10 +1,12 @@
 #pragma once
+#include <type_traits>
 namespace doglib {
 namespace common {
 
 template <typename T>
 class DataIter {
   public:
+    static_assert(std::is_integral<T>::value, "support integer only");
     DataIter(T data) : data(data) {}
     const T& operator*() const {
         return data;
