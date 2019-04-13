@@ -1,6 +1,6 @@
+#pragma once
 namespace doglib {
 namespace common {
-
 template <typename T>
 class DataIter {
   public:
@@ -54,7 +54,7 @@ class DataIter {
         data += n;
         return *this;
     }
-    DataIter<T>& operator-=(ssize_t n)  {
+    DataIter<T>& operator-=(ssize_t n) {
         data -= n;
         return *this;
     }
@@ -68,6 +68,7 @@ class DataIter {
         tmp -= n;
         return tmp;
     }
+
   private:
     T data;
 };
@@ -76,25 +77,5 @@ auto make_iter(T x) -> DataIter<T> {
     return DataIter<T>(x);
 }
 
-namespace impl {
-template <class T>
-class RangeImpl {
-  public:
-    RangeImpl(T beg, T end) : beg(beg), end(end) {}
-    DataIter<T> begin() {
-        return
-    }
-
-  private:
-    T beg, end;
-}
-
-}    // namespace impl
-
-template <typename T>
-inline auto Range(T beg, T end) -> impl::RangeImpl<T> {
-    return
-}
-
-}    // namespace std
+}    // namespace common
 }    // namespace doglib

@@ -1,6 +1,6 @@
+#pragma once
 // limited to C++14
 // since google codejam limits
-#pragma once
 #include <functional>
 #include <algorithm>
 

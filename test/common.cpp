@@ -1,4 +1,9 @@
 #include <gtest/gtest.h>
-TEST(a, b){
+#include "doglib/common/basic.h"
+TEST(trivial, naive){
     EXPECT_EQ(1, 1);
+}
+
+TEST(Common, IntIter){
+
 }
