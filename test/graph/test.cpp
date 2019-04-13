@@ -1,7 +1,8 @@
-#include "../doglib/graph/graph.h"
-#include "../doglib/graph/procedure.h"
+#include "doglib/graph/graph.h"
+#include "doglib/graph/procedure.h"
 #include <vector>
 #include <set>
+#include <iostream>
 
 using namespace doglib::graph;
 
@@ -20,7 +21,6 @@ int main() {
     graph.add_edge(6, 5);
     StaticGraph st_graph(graph);
     std::deque<int> topolist;
-
     {
         ProcedureDFS dfs(graph);
         dfs.set_visitor(Transfer::finish, [&](int, int v) {    //
@@ -58,5 +58,6 @@ int main() {
     }
     int i;
     ++i;
+    std::cout << "done" << std::endl;
     return 0;
 }
