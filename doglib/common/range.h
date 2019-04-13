@@ -1,19 +1,20 @@
 #pragma once
+#include "iter.h"
 namespace doglib {
 namespace common {
 namespace impl {
 template <class T>
 class RangeImpl {
   public:
-    RangeImpl(T beg, T end) : beg(beg), end(end) {}
+    RangeImpl(T beg, T end) : beg_(beg), end_(end) {}
     DataIter<T> begin() {
-        return DataIter<T>(beg);
+        return DataIter<T>(beg_);
     }
     DataIter<T> end() {
-        return DataIter<T>(end);
+        return DataIter<T>(end_);
     }
   private:
-    T beg, end;
+    T beg_, end_;
 };
 
 }    // namespace impl

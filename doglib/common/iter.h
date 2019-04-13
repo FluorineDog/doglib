@@ -28,26 +28,26 @@ class DataIter {
     }
 
     // that's why everyone loves spaceship operator
-    bool operator!=(DataIter<T>& t) const {
+    bool operator!=(const DataIter<T>& t) const {
         return data != t.data;
     }
-    bool operator<(DataIter<T>& t) const {
+    bool operator<(const DataIter<T>& t) const {
         return data < t.data;
     }
-    bool operator==(DataIter<T>& t) const {
+    bool operator==(const DataIter<T>& t) const {
         return !(*this != t);
     }
-    bool operator>(DataIter<T>& t) const {
+    bool operator>(const DataIter<T>& t) const {
         return t < *this;
     }
-    bool operator<=(DataIter<T>& t) const {
+    bool operator<=(const DataIter<T>& t) const {
         return !(t < *this);
     }
-    bool operator>=(DataIter<T>& t) const {
+    bool operator>=(const DataIter<T>& t) const {
         return !(*this < t);
     }
     // for random access, in case for binary search
-    ssize_t operator-(DataIter<T>& t) const {
+    ssize_t operator-(const DataIter<T>& t) const {
         return data - t.data;
     }
     DataIter<T>& operator+=(ssize_t n) {
