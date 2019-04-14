@@ -11,3 +11,4 @@
 #include <stack>
 #include <cassert>
 #include <functional>
+#include <numeric>

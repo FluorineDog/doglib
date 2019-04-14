@@ -16,7 +16,8 @@ std::vector<T> get_vector(size_t N, T (*getter)(void) = io::get<T>) {
     std::vector<T> tmp;
     tmp.reserve(N);
     using namespace common;
-    for(auto _ : Range(N)) {
+    for(auto x : Range(N)) {
+        (void)x;
         tmp.emplace_back(getter());
     }
     return std::move(tmp);
