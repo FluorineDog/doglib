@@ -37,6 +37,8 @@ TEST(UnionFind, fuck3){
         data.push_back(e() % 10);
     }
 
+    data[0] = 0;
+
     std::vector<int> mod_data(N, 0);
     auto scaler = [&](int ori_id, int x_id){
         mod_data[x_id] += mod_data[ori_id];
@@ -51,11 +53,11 @@ TEST(UnionFind, fuck3){
         
         int a = e() % N;
         int b = e() % N; 
-        if(a > b){
+        if(b == 0){
             std::swap(a, b);
         }
-        int edge = data[b] - data[a];
 
+        int edge = data[b] - data[a];
         bool new_connect = uf.merge(a, b, [&](int b_root){
             mod_data[b_root] = (edge - mod_data[b] + mod_data[a] + 20) % 10;
         });
@@ -67,6 +69,6 @@ TEST(UnionFind, fuck3){
     for(int id: Range(N)){
         uf.find(id);
         ASSERT_TRUE(uf.is_linked(0, id));
-        ASSERT_EQ(mod_data[id], id % 10) << id;
+        ASSERT_EQ(mod_data[id], data[id] - data[0]) << id;
     }
 }
