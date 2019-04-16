@@ -51,9 +51,12 @@ TEST(UnionFind, fuck3){
         
         int a = e() % N;
         int b = e() % N; 
+        if(a > b){
+            std::swap(a, b);
+        }
         int edge = data[b] - data[a];
 
-        bool new_connect = uf.merge(1, 2, [&](int b_root){
+        bool new_connect = uf.merge(a, b, [&](int b_root){
             mod_data[b_root] = (edge - mod_data[b] + mod_data[a] + 20) % 10;
         });
         
@@ -63,6 +66,7 @@ TEST(UnionFind, fuck3){
     }while(count > 0);
     for(int id: Range(N)){
         uf.find(id);
-        ASSERT_EQ(mod_data[id], id % 10);
+        ASSERT_TRUE(uf.is_linked(0, id));
+        ASSERT_EQ(mod_data[id], id % 10) << id;
     }
 }
