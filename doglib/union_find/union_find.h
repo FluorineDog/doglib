@@ -44,7 +44,7 @@ class UnionFind {
     }
 
     template <typename Injector = DoNothing>
-    bool merge(int a, int b, Injector injector) {
+    bool merge(int a, int b, Injector injector = DoNothing()) {
         int a_r = find(a);
         int b_r = find(b);
         if(a_r == b_r) {
