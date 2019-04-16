@@ -30,7 +30,7 @@ TEST(UnionFind, mod3) {
 TEST(UnionFind, fuck3){
     std::default_random_engine e;
     std::vector<int> data;
-    constexpr int N = 100000;
+    constexpr int N = 10000;
     e.seed(67);
 
     for(auto x: Range(N)){
