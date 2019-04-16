@@ -43,7 +43,7 @@ class DynamicGraph {
   public:
     DynamicGraph(int n_vertex) : vertex_begs_(n_vertex, -1) {}
     void add_edge(int edge_from, int edge_to) {
-        int new_slot = edges_.size();
+        int new_slot = (int)edges_.size();
         int cur_slot = vertex_begs_[edge_from];
 
         // at new_slot
@@ -58,12 +58,12 @@ class DynamicGraph {
         return id;
     }
 
-    size_t n_vertex() const {
-        return vertex_begs_.size();
+    int n_vertex() const {
+        return (int)vertex_begs_.size();
     }
 
-    size_t get_edges_count() const {
-        return edges_.size();
+    int get_edges_count() const {
+        return (int)edges_.size();
     }
 
     class Iterator {
@@ -100,7 +100,7 @@ class DynamicGraph {
     Iterator begin_at(int edge_from) const {
         return Iterator(edges_, vertex_begs_[edge_from]);
     }
-    Iterator end_at(int edge_from) const {
+    Iterator end_at(int) const {
         return Iterator(edges_, -1);
     }
 };
@@ -120,15 +120,15 @@ class StaticGraph {
             for(auto v_adj : dyn_graph.adjacent(v)) {
                 edges_.push_back(v_adj);
             }
-            vertex_begs_.push_back(edges_.size());
+            vertex_begs_.push_back((int)edges_.size());
         }
     }
 
-    size_t n_vertex() const {
-        return vertex_begs_.size() - 1;
+    int n_vertex() const {
+        return (int)vertex_begs_.size() - 1;
     }
-    size_t get_edges_count() const {
-        return edges_.size();
+    int get_edges_count() const {
+        return (int)edges_.size();
     }
     class Iterator {
       public:

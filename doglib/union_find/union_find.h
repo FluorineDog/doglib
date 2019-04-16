@@ -11,8 +11,10 @@ struct DoNothing {
     void operator()(int, int, int, int) {}
 };
 
-template <class Upscaler=DoNothing>
+template <class Upscaler = DoNothing>
 class UnionFind {
+    static constexpr bool isTrivial = std::is_same<Upscaler, DoNothing>::value;
+
   public:
     UnionFind(int N, Upscaler upscaler = DoNothing()) : parent_(N), upscaler(upscaler) {
         for(int i = 0; i < N; ++i) {
@@ -36,7 +38,13 @@ class UnionFind {
         }
         return root;
     }
-
+    int make_root(int node) {
+        static_assert(isTrivial, "NYI");
+        int rt = find(node);
+        parent_[rt] = node;
+        parent_[node] = node;
+        return rt;
+    }
     bool is_linked(int a, int b) {
         int a_r = find(a);
         int b_r = find(b);
@@ -45,8 +53,8 @@ class UnionFind {
 
     template <typename Injector = DoNothing>
     bool merge(int a, int b, Injector injector = DoNothing()) {
-        static_assert(std::is_same<Injector, DoNothing>::value ==
-                          std::is_same<Upscaler, DoNothing>::value);
+        static_assert(std::is_same<Injector, DoNothing>::value == isTrivial,
+                      "visitor not match");
         int a_r = find(a);
         int b_r = find(b);
         if(a_r == b_r) {

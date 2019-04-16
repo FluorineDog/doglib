@@ -29,5 +29,18 @@ inline auto Range(T end) -> impl::RangeImpl<T> {
     return impl::RangeImpl<T>(T(0), end);
 }
 
+template <typename T>
+struct reverse_wrapper { T& iterable; };
+
+template <typename T>
+auto begin (reverse_wrapper<T> w) { return std::rbegin(w.iterable); }
+
+template <typename T>
+auto end (reverse_wrapper<T> w) { return std::rend(w.iterable); }
+
+template <typename T>
+reverse_wrapper<T> reverse_wrap (T&& iterable) { return { iterable }; }
+
+
 }    // namespace std
 }    // namespace doglib

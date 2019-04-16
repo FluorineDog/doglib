@@ -1,4 +1,5 @@
 #pragma once
+#include "../common/range.h"
 #include "graph.h"
 namespace doglib {
 namespace graph {
@@ -11,10 +12,11 @@ enum class Transfer {
     revisit_finished,
     total_count
 };
+using namespace doglib::common;
 
 class ProcedureDFS {
   public:
-    ProcedureDFS(DynamicGraph& graph)
+    ProcedureDFS(const DynamicGraph& graph)
         : graph(graph), status_vec_(graph.n_vertex(), VertexStatus::Unknown) {}
 
     void clear() {
@@ -29,7 +31,6 @@ class ProcedureDFS {
     }
 
     void execute_at(int source) {
-        int n_vertex = graph.n_vertex();
         if(status_vec_[source] == VertexStatus::Unknown) {
             todo_list_.emplace(-1, source);
         }
@@ -83,11 +84,31 @@ class ProcedureDFS {
     }
 
   private:
+    const DynamicGraph& graph;
     std::vector<VertexStatus> status_vec_;
     std::stack<pair<int, int>> todo_list_;
     std::function<void(int, int)> visitors_[(int)Transfer::total_count];
-    const DynamicGraph& graph;
 };
+
+inline DynamicGraph transpose(const DynamicGraph& graph) {
+    int nV = graph.n_vertex();
+    DynamicGraph trans(nV);
+    for(auto src : Range(nV)) {
+        for(auto dst : graph.adjacent(src)) {
+            trans.add_edge(dst, src);
+        }
+    }
+    return std::move(trans);
+}
+
+inline std::vector<int> toposort(const DynamicGraph& graph) {
+    std::vector<int> tmp;
+    ProcedureDFS dfs(graph);
+    dfs.set_visitor(Transfer::finish, [&](int, int v){
+        tmp.push_back(v);
+    });
+    return std::move(tmp);
+}
 
 }    // namespace graph
 }    // namespace doglib
