@@ -4,22 +4,22 @@
 namespace doglib {
 namespace union_find {
 
-static class DoNothing {
-    void operator(int) {}
-    void operator(int, int) {}
-    void operator(int, int, int){};
-    void operator(int, int, int, int) {}
+struct DoNothing {
+    void operator()(int) {}
+    void operator()(int, int) {}
+    void operator()(int, int, int){};
+    void operator()(int, int, int, int) {}
 };
 
-template <class UpscaleVisitor = DoNothing>
+template <class Upscaler=DoNothing>
 class UnionFind {
   public:
-    UnionFind(int N) : data_(N) {
+    UnionFind(int N, Upscaler upscaler = DoNothing()) : parent_(N), upscaler(upscaler) {
         for(int i = 0; i < N; ++i) {
-            parnet_[i] = i;
+            parent_[i] = i;
         }
     }
-    int find(int node_) {
+    int find(int node) {
         int iter = node;
         std::stack<int> path;
         while(parent_[iter] != iter) {
@@ -30,11 +30,11 @@ class UnionFind {
         while(!path.empty()) {
             int x = path.top();
             path.pop();
-            ori_root = parent_[x];
+            int ori_root = parent_[x];
             parent_[x] = root;
-            UpscaleVisitor()(ori_root, x);
+            upscaler(ori_root, x);
         }
-        return node;
+        return root;
     }
 
     bool is_linked(int a, int b) {
@@ -45,18 +45,22 @@ class UnionFind {
 
     template <typename Injector = DoNothing>
     bool merge(int a, int b, Injector injector = DoNothing()) {
+        static_assert(std::is_same<Injector, DoNothing>::value ==
+                          std::is_same<Upscaler, DoNothing>::value);
         int a_r = find(a);
         int b_r = find(b);
         if(a_r == b_r) {
             return false;
         }
-        parent[b_r] = a_r;
+        parent_[b_r] = a_r;
         injector(b_r);
         return true;
     }
 
   private:
-    vector<int> parent_;
+    std::vector<int> parent_;
+    Upscaler upscaler;
 };
+
 }    // namespace union_find
 }    // namespace doglib
