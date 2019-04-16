@@ -27,7 +27,7 @@ TEST(UnionFind, mod3) {
     }
 }
 
-TEST(UnionFind, fuck3){
+TEST(UnionFind, stateful){
     std::default_random_engine e;
     std::vector<int> data;
     constexpr int N = 10000;
