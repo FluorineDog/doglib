@@ -47,8 +47,9 @@ class ProcedureBFS : public ProcedureBase {
         }
 
         while(!todo_list_.empty()) {
-            int v = todo_list_.top();
-            for(v_adj : graph.adjacent(v)) {
+            int v = todo_list_.front();
+            todo_list_.pop();
+            for(auto v_adj : graph.adjacent(v)) {
                 switch(status_vec_[v_adj]) {
                     case VertexStatus::Unknown: {
                         visit(v, v_adj, Transfer::discover);
@@ -60,10 +61,11 @@ class ProcedureBFS : public ProcedureBase {
             }
         }
     }
+
   private:
-    std::queue << int >> todo_list_;
+    std::queue<int> todo_list_;
     std::vector<VertexStatus> status_vec_;
-}
+};
 
 class ProcedureDFS : public ProcedureBase {
   public:
