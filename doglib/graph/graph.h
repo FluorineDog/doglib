@@ -83,7 +83,7 @@ class DynamicGraph {
         int operator*() const {
             return edges_[index_].to;
         }
-
+        
       private:
         friend DynamicGraph;
         Iterator(const std::vector<EdgeInfo>& edges_, int index = -1)
