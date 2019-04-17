@@ -1,4 +1,5 @@
 #include "doglib/graph/graph.h"
+#include "doglib/graph/staticgraph.h"
 #include "doglib/graph/procedure.h"
 #include <vector>
 #include <set>
