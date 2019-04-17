@@ -22,6 +22,7 @@ class UnionFind {
         }
     }
     int find(int node) {
+        assert(node < parent_.size());
         int iter = node;
         std::stack<int> path;
         while(parent_[iter] != iter) {
@@ -39,6 +40,7 @@ class UnionFind {
         return root;
     }
     int make_root(int node) {
+        assert(node < parent_.size());
         static_assert(isTrivial, "NYI");
         int rt = find(node);
         parent_[rt] = node;
@@ -46,6 +48,8 @@ class UnionFind {
         return rt;
     }
     bool is_linked(int a, int b) {
+        assert(a < parent_.size());
+        assert(b < parent_.size());
         int a_r = find(a);
         int b_r = find(b);
         return a_r == b_r;
@@ -53,6 +57,8 @@ class UnionFind {
 
     template <typename Injector = DoNothing>
     bool merge(int a, int b, Injector injector = DoNothing()) {
+        assert(a < parent_.size());
+        assert(b < parent_.size());
         static_assert(std::is_same<Injector, DoNothing>::value == isTrivial,
                       "visitor not match");
         int a_r = find(a);

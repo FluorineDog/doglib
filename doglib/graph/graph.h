@@ -43,6 +43,9 @@ class DynamicGraph {
   public:
     DynamicGraph(int n_vertex) : vertex_begs_(n_vertex, -1) {}
     void add_edge(int edge_from, int edge_to) {
+        int nV = n_vertex();
+        assert(edge_from < nV);
+        assert(edge_to < nV);
         int new_slot = (int)edges_.size();
         int cur_slot = vertex_begs_[edge_from];
 

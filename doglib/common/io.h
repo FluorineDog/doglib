@@ -4,7 +4,7 @@
 #include "range.h"
 namespace doglib {
 namespace io {
-template <typename T>
+template <typename T=int>
 T get() {
     T x;
     std::cin >> x;

@@ -14,23 +14,36 @@ enum class Transfer {
 };
 using namespace doglib::common;
 
-class ProcedureDFS {
+class ProcedureBase {
   public:
-    ProcedureDFS(const DynamicGraph& graph)
-        : graph(graph), status_vec_(graph.n_vertex(), VertexStatus::Unknown) {}
-
-    void clear() {
-        for(auto& s : status_vec_) {
-            s = VertexStatus::Unknown;
-        }
-        todo_list_ = std::stack<pair<int, int>>();
-    }
+    ProcedureBase(const DynamicGraph& graph) : graph(graph) {}
 
     void set_visitor(Transfer type, std::function<void(int, int)> visitor) {
         visitors_[(int)type] = visitor;
     }
 
-    void execute_at(int source) {
+    virtual void execute_at(int source) = 0;
+    void visit(int from, int to, Transfer type) {
+        auto& visitor = visitors_[(int)type];
+        if(visitor) {
+            visitor(from, to);
+        }
+    }
+
+    virtual ~ProcedureBase() = default;
+
+  protected:
+    const DynamicGraph& graph;
+
+  private:
+    std::function<void(int, int)> visitors_[(int)Transfer::total_count];
+};
+
+class ProcedureDFS : public ProcedureBase {
+  public:
+    ProcedureDFS(const DynamicGraph& graph)
+        : ProcedureBase(graph), status_vec_(graph.n_vertex(), VertexStatus::Unknown) {}
+    void execute_at(int source) final override {
         if(status_vec_[source] == VertexStatus::Unknown) {
             todo_list_.emplace(-1, source);
         }
@@ -76,18 +89,8 @@ class ProcedureDFS {
     }
 
   private:
-    void visit(int from, int to, Transfer type) {
-        auto& visitor = visitors_[(int)type];
-        if(visitor) {
-            visitor(from, to);
-        }
-    }
-
-  private:
-    const DynamicGraph& graph;
     std::vector<VertexStatus> status_vec_;
     std::stack<pair<int, int>> todo_list_;
-    std::function<void(int, int)> visitors_[(int)Transfer::total_count];
 };
 
 inline DynamicGraph transpose(const DynamicGraph& graph) {
@@ -104,14 +107,13 @@ inline DynamicGraph transpose(const DynamicGraph& graph) {
 inline std::vector<int> toposort(const DynamicGraph& graph) {
     std::vector<int> tmp;
     ProcedureDFS dfs(graph);
-    dfs.set_visitor(Transfer::finish, [&](int, int v){
-        tmp.push_back(v);
-    });
+    dfs.set_visitor(Transfer::finish, [&](int, int v) { tmp.push_back(v); });
     int N = graph.n_vertex();
-    for(auto v:Range(graph.n_vertex())){
+    for(auto v : Range(N)) {
         dfs.execute_at(v);
     }
-    return std::move(tmp);
+    std::reverse(tmp.begin(), tmp.end());
+    return tmp;
 }
 
 }    // namespace graph
