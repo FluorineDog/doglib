@@ -22,15 +22,12 @@ class ProcedureBase {
         visitors_[(int)type] = visitor;
     }
 
-    virtual void execute_at(int source) = 0;
     void visit(int from, int to, Transfer type) {
         auto& visitor = visitors_[(int)type];
         if(visitor) {
             visitor(from, to);
         }
     }
-
-    virtual ~ProcedureBase() = default;
 
   protected:
     const DynamicGraph& graph;
@@ -39,11 +36,40 @@ class ProcedureBase {
     std::function<void(int, int)> visitors_[(int)Transfer::total_count];
 };
 
+class ProcedureBFS : public ProcedureBase {
+  public:
+    ProcedureBFS(const DynamicGraph& graph) : ProcedureBase(graph) {}
+    void execute_at(int source) {
+        if(status_vec_[source] == VertexStatus::Unknown) {
+            status_vec_[source] = VertexStatus::Finished;
+            visit(-1, source, Transfer::discover);
+            todo_list_.emplace(source);
+        }
+
+        while(!todo_list_.empty()) {
+            int v = todo_list_.top();
+            for(v_adj : graph.adjacent(v)) {
+                switch(status_vec_[v_adj]) {
+                    case VertexStatus::Unknown: {
+                        visit(v, v_adj, Transfer::discover);
+                        status_vec_[v_adj] = VertexStatus::Finished;
+                        todo_list_.emplace(v_adj);
+                    }
+                    default: break;
+                }
+            }
+        }
+    }
+  private:
+    std::queue << int >> todo_list_;
+    std::vector<VertexStatus> status_vec_;
+}
+
 class ProcedureDFS : public ProcedureBase {
   public:
     ProcedureDFS(const DynamicGraph& graph)
         : ProcedureBase(graph), status_vec_(graph.n_vertex(), VertexStatus::Unknown) {}
-    void execute_at(int source) final override {
+    void execute_at(int source) {
         if(status_vec_[source] == VertexStatus::Unknown) {
             todo_list_.emplace(-1, source);
         }
