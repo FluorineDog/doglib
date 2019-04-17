@@ -107,6 +107,10 @@ inline std::vector<int> toposort(const DynamicGraph& graph) {
     dfs.set_visitor(Transfer::finish, [&](int, int v){
         tmp.push_back(v);
     });
+    int N = graph.n_vertex();
+    for(auto v:Range(graph.n_vertex())){
+        dfs.execute_at(v);
+    }
     return std::move(tmp);
 }
 
