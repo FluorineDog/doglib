@@ -13,7 +13,6 @@ class UnionFind {
     int find(int node) {
         assert(node < parent_.size());
         int iter = node;
-        std::stack<int> path;
         while(parent_[iter] != iter) {
             iter = parent_[iter];
         }
