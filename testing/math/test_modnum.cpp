@@ -5,9 +5,9 @@
 using namespace doglib::common;
 using namespace doglib::math;
 
-TEST(trivial, naive) {
-    EXPECT_EQ(1, 1);
-}
+// TEST(trivial, naive) {
+//     EXPECT_EQ(1, 1);
+// }
 
 TEST(modnum, simple) {
     using T = ModNum<1 << 27>;

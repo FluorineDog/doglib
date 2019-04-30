@@ -4,9 +4,10 @@
 #include "doglib/union_find/union_find.h"
 #include <random>
 
-TEST(trivial, naive) {
-    EXPECT_EQ(1, 1);
-}
+// TEST(trivial, naive) {
+//     EXPECT_EQ(1, 1);
+// }
+
 using namespace doglib;
 using namespace doglib::common;
 using namespace doglib::union_find;
