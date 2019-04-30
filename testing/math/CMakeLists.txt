@@ -1,0 +1,3 @@
+add_executable(test_modnum test_modnum.cpp)
+target_link_libraries(test_modnum gtest_main)
+gtest_discover_tests(test_modnum)
