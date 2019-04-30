@@ -27,6 +27,40 @@ TEST(UnionFind, mod3) {
         ASSERT_EQ(uf.find(x), x % 3);
     }
 }
+TEST(UnionFind, percolation) {
+    constexpr int N = 512;
+    std::default_random_engine e;
+    int line = 2 * N + 1;
+    UnionFind uf(line * line);
+    std::vector<bool> grid(N * N, false);
+    int buttom_offset = line * (line - 1);
+    for(int i = 0; i < N - 1; ++i){
+        uf.merge(2 * i + 1, 2 * i + 3);
+        uf.merge(2 * i + 1 + buttom_offset, 2 * i + 3 + buttom_offset);
+    }
+    int st = 1;
+    int ed = st + buttom_offset;
+    int count = 0;
+    while(!uf.is_linked(st, ed)) {
+        int row = e() % N;    
+        int col = e() % N;
+        int grid_id = row * N + col;
+        if(grid[grid_id]) {
+            continue;
+        }
+        grid[grid_id] = true;
+        ++count;
+        int center = (2 * row + 1) * line + 2 * col + 1;
+        uf.merge(center, center + 1);
+        uf.merge(center, center - 1);
+        uf.merge(center, center + line);
+        uf.merge(center, center - line);
+    }
+    double ratio = (double)count / N / N;
+    // around 0.592
+    EXPECT_LE(ratio, 0.61);
+    EXPECT_GT(ratio, 0.57);
+}
 
 // TEST(UnionFind, stateful){
 //     std::default_random_engine e;
