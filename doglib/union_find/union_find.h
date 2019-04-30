@@ -27,13 +27,6 @@ class UnionFind {
         }
         return root;
     }
-    int make_root(int node) {
-        assert(node < parent_.size());
-        int rt = find(node);
-        parent_[rt] = node;
-        parent_[node] = node;
-        return rt;
-    }
     bool is_linked(int a, int b) {
         assert(a < parent_.size());
         assert(b < parent_.size());
@@ -41,17 +34,15 @@ class UnionFind {
         int b_r = find(b);
         return a_r == b_r;
     }
-
-    bool merge(int a, int b) {
+    int merge(int a, int b) {
         assert(a < parent_.size());
         assert(b < parent_.size());
         int a_r = find(a);
         int b_r = find(b);
-        if(a_r == b_r) {
-            return false;
+        if(a_r != b_r) {
+            parent_[b_r] = a_r;
         }
-        parent_[b_r] = a_r;
-        return true;
+        return a_r;
     }
 
   private:
