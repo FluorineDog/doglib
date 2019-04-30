@@ -10,9 +10,12 @@ template <typename T>
 auto factorial(int x) -> T {
     thread_local std::vector<T> memory(1, (T)1);
     assert(x >= 0);
-    if(x + 1 > memory.size()) {
+    if(x + 1 >= memory.size()) {
+        memory.reserve(2 * x + 10);
+        T last = memory.back();
         for(auto idx : Range((int)memory.size(), 2 * x + 10)) {
-            memory[idx] = memory[idx - 1] * idx;
+            last = last * idx;
+            memory.emplace_back(last);
         }
     }
     return memory[x];
@@ -20,7 +23,7 @@ auto factorial(int x) -> T {
 
 template <typename T>
 auto cmb_choose(int b, int a) -> T{
-    return factorial<T>(a) / factorial<T>(b - a) / factorial<T>(a);
+    return factorial<T>(b) / factorial<T>(b - a) / factorial<T>(a);
 }
 
 template <typename T>
