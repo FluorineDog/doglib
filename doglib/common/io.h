@@ -1,15 +1,23 @@
 #pragma once
 #include <iostream>
+#include <tuple>
 #include "utils.h"
 #include "range.h"
 namespace doglib {
 namespace io {
-template <typename T=int>
+template <typename T = int>
 T get() {
     T x;
     std::cin >> x;
     return x;
 }
+
+template <typename T, typename U>
+std::istream& operator<<(std::istream& in, std::pair<T, U>& pr) {
+    pr.first = io::get<T>();
+    pr.second = io::get<U>();
+}
+
 
 template <typename T>
 std::vector<T> get_vector(size_t N, T (*getter)(void) = io::get<T>) {
