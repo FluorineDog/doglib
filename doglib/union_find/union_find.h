@@ -15,15 +15,14 @@ class UnionFind {
         int iter = node;
         std::stack<int> path;
         while(parent_[iter] != iter) {
-            path.push(iter);
             iter = parent_[iter];
         }
         int root = iter;
-        while(!path.empty()) {
-            int x = path.top();
-            path.pop();
-            int ori_root = parent_[x];
-            parent_[x] = root;
+        iter = node;
+        while(iter != root) {
+            auto ori_rt = parent_[iter];
+            parent_[iter] = root;
+            iter = ori_rt;
         }
         return root;
     }
