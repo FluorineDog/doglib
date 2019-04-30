@@ -33,7 +33,7 @@ TEST(modnum, simple) {
 
 TEST(modnum, advanced) {
     using T = PrimeModNum<100000007>;
-    int N = 2;
+    int N = 1000;
     auto fac = [](int x) {
         T tmp = 1;
         for(auto id : Range(1, x + 1)) {
