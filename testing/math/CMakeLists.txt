@@ -1,0 +1,7 @@
+add_executable(test_modnum test_modnum.cpp)
+target_link_libraries(test_modnum gtest_main)
+gtest_discover_tests(test_modnum)
+
+add_executable(test_combination test_combination.cpp)
+target_link_libraries(test_combination gtest_main)
+gtest_discover_tests(test_combination)

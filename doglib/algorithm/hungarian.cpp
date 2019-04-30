@@ -20,7 +20,7 @@ void fuck(const vector<vector<double>>& table, int n_src, int n_dest) {
                 // cur is S
                 cur = ~cur;
                 for(auto d: Range(table)){
-                    if(matching[])
+                    // if(matching[])
                 }
             }
         }
