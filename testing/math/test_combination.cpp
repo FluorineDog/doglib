@@ -14,7 +14,6 @@ using namespace doglib::math;
 TEST(combination, advanced) {
     using T = PrimeModNum<100000007>;
     int N = 100000;
-    auto fac = &factorial<T>; 
     auto comb = &cmb_choose<T>;
 
     T sum = 0;

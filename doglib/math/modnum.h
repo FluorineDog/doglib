@@ -6,7 +6,7 @@ namespace math {
 using ull = long long;
 // find out leading zeros
 int clz(ull x) {
-    return __builtin_clz(x);
+    return __builtin_clzll(x);
 }
 
 template <ull mod, bool is_prime = false>
@@ -33,7 +33,7 @@ class ModNum {
 
     ModNum pow(ull exp) const {
         if(exp == 0) return 1;
-        int count1s = sizeof(ull) * 8 - clz(exp);
+        int count1s = (int)sizeof(ull) * 8 - clz(exp);
         ModNum x = 1;
         for(int shift = count1s; shift-- > 0;) {
             x = x * x;

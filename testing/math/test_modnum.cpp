@@ -1,7 +1,9 @@
+#include <cmath>
 #include <gtest/gtest.h>
 #include <random>
 #include "doglib/common/common.h"
 #include "doglib/math/modnum.h"
+#include "doglib/math/arithmetic.h"
 using namespace doglib::common;
 using namespace doglib::math;
 
@@ -10,11 +12,13 @@ using namespace doglib::math;
 // }
 
 TEST(modnum, simple) {
-    using T = ModNum<1 << 27>;
+    constexpr int mod = 1 << 27;
+    using T = ModNum<mod>;
     T a = 0;
     ull b = 0;
     std::default_random_engine e;
     for(auto idx : Range(10000)) {
+        (void)idx;
         ull rd = e();
         a = a + rd;
         b = b + rd;
@@ -24,11 +28,15 @@ TEST(modnum, simple) {
         rd = e();
         a = rd - a;
         b = rd - b;
+        if(b == 0) {
+            a = a + 1;
+            b = b + 1;
+        }
         rd = e() % 100000;
         a = a.pow(rd);
-        b = std::pow(b, rd);
+        b = pow_int(b, rd);
     }
-    EXPECT_EQ((ull)a, b % 64);
+    EXPECT_EQ((ull)a, b % mod);
 }
 
 TEST(modnum, advanced) {
@@ -41,9 +49,7 @@ TEST(modnum, advanced) {
         }
         return tmp;
     };
-    auto comb = [&](int a, int b) {
-        return fac(a) / fac(a - b) / fac(b);
-    } ;
+    auto comb = [&](int a, int b) { return fac(a) / fac(a - b) / fac(b); };
     T sum = 0;
     for(int i = 0; i <= N; ++i) {
         sum = sum + comb(N, i);

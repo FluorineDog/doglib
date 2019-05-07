@@ -57,7 +57,7 @@ int main() {
             dfs.execute_at(v);
         }
     }
-    int i;
+    int i = 0;
     ++i;
     std::cout << "done" << std::endl;
     return 0;

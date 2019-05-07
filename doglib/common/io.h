@@ -12,7 +12,6 @@ T get() {
     return x;
 }
 
-
 template <typename T>
 std::vector<T> get_vector(size_t N, T (*getter)(void) = io::get<T>) {
     std::vector<T> tmp;
@@ -26,13 +25,15 @@ std::vector<T> get_vector(size_t N, T (*getter)(void) = io::get<T>) {
 }
 
 void set_cin_source(std::string path, int argc = 0, char* argv[] = NULL) {
-#ifdef DOG_DEBUG
+    (void)path;
+#ifndef DOG_DEBUG
+    return;
+#endif
     if(argc == 2) {
         freopen(argv[1], "r", stdin);
     } else {
         freopen(path.c_str(), "r", stdin);
     }
-#endif
 }
 
 }    // namespace io

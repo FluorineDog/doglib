@@ -57,21 +57,21 @@ class DataIter {
         return data - t.data;
     }
     DataIter<T>& operator+=(ssize_t n) {
-        data += n;
+        data += (T)n;
         return *this;
     }
     DataIter<T>& operator-=(ssize_t n) {
-        data -= n;
+        data -= (T)n;
         return *this;
     }
     DataIter<T> operator+(ssize_t n) const {
         int tmp = *this;
-        tmp += n;
+        tmp += (T)n;
         return tmp;
     }
     DataIter<T> operator-(ssize_t n) const {
         int tmp = *this;
-        tmp -= n;
+        tmp -= (T)n;
         return tmp;
     }
 
