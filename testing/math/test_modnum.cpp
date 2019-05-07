@@ -36,7 +36,7 @@ TEST(modnum, simple) {
         a = a.pow(rd);
         b = pow_int(b, rd);
     }
-    EXPECT_EQ((ull)a, b % mod);
+    EXPECT_EQ((ull)a, (unsigned)b % mod);
 }
 
 TEST(modnum, advanced) {
