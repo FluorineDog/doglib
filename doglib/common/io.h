@@ -12,12 +12,6 @@ T get() {
     return x;
 }
 
-template <typename T, typename U>
-std::istream& operator<<(std::istream& in, std::pair<T, U>& pr) {
-    pr.first = io::get<T>();
-    pr.second = io::get<U>();
-}
-
 
 template <typename T>
 std::vector<T> get_vector(size_t N, T (*getter)(void) = io::get<T>) {
@@ -43,3 +37,11 @@ void set_cin_source(std::string path, int argc = 0, char* argv[] = NULL) {
 
 }    // namespace io
 }    // namespace doglib
+
+template <typename T, typename U>
+std::istream& operator>>(std::istream& in, std::pair<T, U>& pr) {
+    using namespace doglib;
+    pr.first = io::get<T>();
+    pr.second = io::get<U>();
+    return in;
+}
