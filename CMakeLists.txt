@@ -2,4 +2,11 @@ cmake_minimum_required(VERSION 3.10)
 add_definitions(-D_GLIBCXX_DEBUG)
 enable_testing()
 include_directories(.)
+
+macro(dog_test functor)
+    add_executable(test_${functor} test_${functor}.cpp)
+    target_link_libraries(test_${functor} gtest_main)
+    gtest_discover_tests(test_${functor})
+endmacro()
+
 add_subdirectory(testing)

@@ -11,7 +11,7 @@ using namespace doglib::math;
 // }
 
 
-TEST(modnum, advanced) {
+TEST(combination, advanced) {
     using T = PrimeModNum<100000007>;
     int N = 100000;
     auto fac = &factorial<T>; 
