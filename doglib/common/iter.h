@@ -1,7 +1,7 @@
 #pragma once
 #include <unistd.h>
 #include <type_traits>
-#include <algorithm>
+#include <iterator>
 namespace doglib {
 namespace common {
 
