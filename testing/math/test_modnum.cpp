@@ -28,7 +28,7 @@ TEST(modnum, simple) {
         rd = e();
         a = rd - a;
         b = rd - b;
-        if(b == 0) {
+        if(b % 2 == 0) {
             a = a + 1;
             b = b + 1;
         }
