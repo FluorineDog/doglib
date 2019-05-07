@@ -12,7 +12,7 @@ using namespace doglib::math;
 // }
 
 TEST(modnum, simple) {
-    constexpr int mod = 1 << 27;
+    constexpr unsigned mod = 1 << 27;
     using T = ModNum<mod>;
     T a = 0;
     ull b = 0;
@@ -36,7 +36,7 @@ TEST(modnum, simple) {
         a = a.pow(rd);
         b = pow_int(b, rd);
     }
-    EXPECT_EQ((ull)a, b & (mod -1 ));
+    EXPECT_EQ((ull)a, b % mod);
 }
 
 TEST(modnum, advanced) {
