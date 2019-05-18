@@ -34,21 +34,21 @@ ull gcd(ull a, ull b) {
 //     }
 // };
 
-pair<ull, ull> frac_between(ull a, ull b, ull c, ull d) {
+std::pair<ull, ull> frac_between(ull a, ull b, ull c, ull d) {
     if(!a) {
-        return make_pair(1, c / d + 1);
+        return std::make_pair(1, c / d + 1);
     }
     if(a > b) {
-        int i = a / b;
+        auto i = a / b;
         auto pr = frac_between(a - i * b, b, c - i * d, d);
         pr.first += i * pr.second; 
         return pr;
     }
     if(c > d){
-        return make_pair(1LL, 1LL);
+        return std::make_pair(1LL, 1LL);
     }
     auto pr = frac_between(d, c, b, a);
-    return make_pair(pr.second, pr.first);
+    return std::make_pair(pr.second, pr.first);
 }
 
 }    // namespace math
