@@ -132,16 +132,26 @@ inline DynamicGraph transpose(const DynamicGraph& graph) {
     return std::move(trans);
 }
 
-inline std::vector<int> toposort(const DynamicGraph& graph) {
-    std::vector<int> tmp;
+inline std::vector<int> toposort(const DynamicGraph& graph, bool ignore_cycle = true) {
+    std::vector<int> orders;
     ProcedureDFS dfs(graph);
-    dfs.set_visitor(Transfer::finish, [&](int, int v) { tmp.push_back(v); });
+    bool has_cycle = false;
+    dfs.set_visitor(Transfer::finish, [&](int, int v) { orders.push_back(v); });
+    dfs.set_visitor(Transfer::revisit_processing, [&](int, int) { has_cycle = true; });
     int N = graph.n_vertex();
     for(auto v : Range(N)) {
         dfs.execute_at(v);
     }
-    std::reverse(tmp.begin(), tmp.end());
-    return tmp;
+    std::reverse(orders.begin(), orders.end());
+    if(has_cycle && !ignore_cycle) {
+        return std::vector<int>();
+    } else {
+        return orders;
+    }
+}
+
+inline bool has_cycle(const DynamicGraph& graph) {
+    return toposort(graph, false).size() == 0;
 }
 
 }    // namespace graph

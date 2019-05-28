@@ -12,3 +12,5 @@
 #include <cassert>
 #include <functional>
 #include <numeric>
+template <class T>
+using min_heap = std::priority_queue<T, std::vector<T>, std::greater<T>>;
