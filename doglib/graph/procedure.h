@@ -129,7 +129,7 @@ inline DynamicGraph transpose(const DynamicGraph& graph) {
             trans.add_edge(dst, src);
         }
     }
-    return std::move(trans);
+    return trans;
 }
 
 inline std::vector<int> toposort(const DynamicGraph& graph, bool ignore_cycle = true) {
