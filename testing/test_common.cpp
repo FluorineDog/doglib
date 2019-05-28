@@ -34,7 +34,8 @@ struct Data{
 };
 
 TEST(IO, getter) {
-    freopen("../../data/io-test.txt", "r", stdin);
+    auto hld = freopen("../../data/io-test.txt", "r", stdin);
+    (void)hld;
     auto T = io::get<int>();
     auto N = io::get<int>();
     auto M = io::get<int>();

@@ -30,7 +30,7 @@ TEST(UnionFind, mod3) {
 }
 
 TEST(UnionFind, percolation) {
-    constexpr int N = 512;
+    constexpr int N = 512 ;
     std::default_random_engine e;
     int line = 2 * N + 1;
     UnionFind uf(line * line);
@@ -71,8 +71,8 @@ enum class Grid {
 };
 
 TEST(AdvancedUnionFind, percolation) {
-    constexpr int R = 51200;
-    constexpr int C = 51200;
+    constexpr int R = 512;
+    constexpr int C = 512;
     std::default_random_engine e;
     AdvancedUnionFind<Grid> uf({(R + 1) * (C + 1),    //
                                 (R + 1) * (C + 1),    //
