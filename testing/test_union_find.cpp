@@ -36,7 +36,7 @@ TEST(UnionFind, percolation) {
     UnionFind uf(line * line);
     std::vector<bool> grid(N * N, false);
     int buttom_offset = line * (line - 1);
-    for(int i = 0; i < N - 1; ++i){
+    for(int i = 0; i < N - 1; ++i) {
         uf.merge(2 * i + 1, 2 * i + 3);
         uf.merge(2 * i + 1 + buttom_offset, 2 * i + 3 + buttom_offset);
     }
@@ -44,7 +44,7 @@ TEST(UnionFind, percolation) {
     int ed = st + buttom_offset;
     int count = 0;
     while(!uf.is_linked(st, ed)) {
-        int row = e() % N;    
+        int row = e() % N;
         int col = e() % N;
         int grid_id = row * N + col;
         if(grid[grid_id]) {
@@ -61,10 +61,12 @@ TEST(UnionFind, percolation) {
     double ratio = (double)count / N / N;
     EXPECT_NEAR(ratio, 0.592, 0.02);
 }
-enum class Grid{
-    HorizontalLine,
-    VerticalLine, 
-    Block, 
+enum class Grid {
+    HorizontalLine,    //
+    VerticalLine,
+    Block,
+    StartNode,
+    EndNode,
     CountOfTypes
 };
 
@@ -72,7 +74,33 @@ TEST(AdvancedUnionFind, percolation) {
     constexpr int R = 512;
     constexpr int C = 512;
     std::default_random_engine e;
-    AdvancedUnionFind<Grid> uf({R*C + C, R*C + R, R*C});
-   
-    // EXPECT_NEAR(ratio, 0.592, 0.02);
+    AdvancedUnionFind<Grid> uf({(R + 1) * (C + 1),    //
+                                (R + 1) * (C + 1),    //
+                                (R + 1) * (C + 1),    //
+                                1,                    //
+                                1});
+    auto get_id = [=](int row, int col) { return row * (C + 1) + col; };
+    for(auto i : Range(C)) {
+        uf.merge(Grid::HorizontalLine, get_id(0, i), Grid::StartNode, 0);
+        uf.merge(Grid::HorizontalLine, get_id(R, i), Grid::EndNode, 0);
+    }
+    std::vector<bool> grid((R + 1) * (C + 1), false);
+    int count = 0;
+    while(!uf.is_linked(Grid::StartNode, 0, Grid::EndNode, 0)) {
+        int row;
+        int col;
+        do {
+            row = e() % R;
+            col = e() % C;
+        } while(grid[get_id(row, col)]);
+        grid[get_id(row, col)] = true;
+        ++count;
+        uf.merge(Grid::Block, get_id(row, col), Grid::HorizontalLine, get_id(row, col));
+        uf.merge(Grid::Block, get_id(row, col), Grid::HorizontalLine,
+                 get_id(row + 1, col));
+        uf.merge(Grid::Block, get_id(row, col), Grid::VerticalLine, get_id(row, col));
+        uf.merge(Grid::Block, get_id(row, col), Grid::VerticalLine, get_id(row, col + 1));
+    }
+    double ratio = count * 1.0 / R / C;
+    EXPECT_NEAR(ratio, 0.592, 0.02);
 }
