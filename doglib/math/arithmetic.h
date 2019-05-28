@@ -1,4 +1,4 @@
-#include "../common/constants.h"
+#include "../common/constant.h"
 namespace doglib {
 namespace math {
 template <class T, class U>

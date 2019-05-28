@@ -5,9 +5,15 @@ namespace doglib {
 namespace union_find {
 class UnionFind {
   public:
-    UnionFind(int N) : parent_(N) {
-        for(int i = 0; i < N; ++i) {
-            parent_[i] = i;
+    explicit UnionFind(int N){
+        resize(N);
+    }
+    void resize(int n){
+        int cur_n = static_cast<int>(parent_.size());
+        assert(cur_n <= n);
+        parent_.reserve(n);
+        for(auto idx: common::Range(cur_n, n)) {
+            parent_.push_back(idx);
         }
     }
     int find(int node) {

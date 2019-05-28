@@ -12,8 +12,8 @@ T get() {
     return x;
 }
 
-template <typename T>
-std::vector<T> get_vector(size_t N, T (*getter)(void) = io::get<T>) {
+template <typename T, typename Func=T(void)>
+std::vector<T> get_vector(size_t N, Func getter = io::get<T>) {
     std::vector<T> tmp;
     tmp.reserve(N);
     using namespace common;
@@ -21,7 +21,7 @@ std::vector<T> get_vector(size_t N, T (*getter)(void) = io::get<T>) {
         (void)x;
         tmp.emplace_back(getter());
     }
-    return std::move(tmp);
+    return tmp;
 }
 
 inline void set_cin_source(std::string path, int argc = 0, char* argv[] = NULL) {

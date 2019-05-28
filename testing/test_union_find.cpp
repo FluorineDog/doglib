@@ -2,6 +2,7 @@
 #include "doglib/common/common.h"
 #include "doglib/common/utils.h"
 #include "doglib/union_find/union_find.h"
+#include "doglib/union_find/advanced_union_find.h"
 #include <random>
 
 // TEST(trivial, naive) {
@@ -27,6 +28,7 @@ TEST(UnionFind, mod3) {
         ASSERT_EQ(uf.find(x), x % 3);
     }
 }
+
 TEST(UnionFind, percolation) {
     constexpr int N = 512;
     std::default_random_engine e;
@@ -57,56 +59,20 @@ TEST(UnionFind, percolation) {
         uf.merge(center, center - line);
     }
     double ratio = (double)count / N / N;
-    // around 0.592
-    EXPECT_LE(ratio, 0.61);
-    EXPECT_GT(ratio, 0.57);
+    EXPECT_NEAR(ratio, 0.592, 0.02);
 }
+enum class Grid{
+    HorizontalLine,
+    VerticalLine, 
+    Block, 
+    CountOfTypes
+};
 
-// TEST(UnionFind, stateful){
-//     std::default_random_engine e;
-//     std::vector<int> data;
-//     constexpr int N = 10000;
-//     e.seed(67);
-
-//     for(auto x: Range(N)){
-//         data.push_back(e() % 10000);
-//     }
-
-//     std::vector<int> mod_data(N, 0);
-//     auto scaler = [&](int ori_id, int x_id){
-//         mod_data[x_id] += mod_data[ori_id];
-//     };
-
-//     UnionFind<decltype(scaler)> uf(N, scaler);
-
-//     e.seed(67);
-//     int count = N - 1;
-//     do{
-        
-//         int a = e() % N;
-//         int b = e() % N; 
-//         if(b == 0){
-//             std::swap(a, b);
-//         }
-
-//         // int edge = data[b] - data[a];
-//         int edge = data[b] - data[a];
-//         bool new_connect = uf.merge(a, b, [&](int b_root){
-//             mod_data[b_root] = edge - mod_data[b] + mod_data[a];
-//         });
-        
-//         if(new_connect){
-//             --count;
-//         }
-//     }while(count > 0);
-//     for(int id: Range(N)){
-//         uf.find(id);
-//     }
-//     int root_v = data[uf.find(0)];
-    
-//     for(int id: Range(N)){
-//         uf.find(id);
-//         ASSERT_TRUE(uf.is_linked(0, id));
-//         ASSERT_EQ(mod_data[id], data[id]-root_v) << id;
-//     }
-// }
+TEST(AdvancedUnionFind, percolation) {
+    constexpr int R = 512;
+    constexpr int C = 512;
+    std::default_random_engine e;
+    AdvancedUnionFind<Grid> uf({R*C + C, R*C + R, R*C});
+   
+    // EXPECT_NEAR(ratio, 0.592, 0.02);
+}
