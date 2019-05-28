@@ -71,8 +71,8 @@ enum class Grid {
 };
 
 TEST(AdvancedUnionFind, percolation) {
-    constexpr int R = 512;
-    constexpr int C = 512;
+    constexpr int R = 51200;
+    constexpr int C = 51200;
     std::default_random_engine e;
     AdvancedUnionFind<Grid> uf({(R + 1) * (C + 1),    //
                                 (R + 1) * (C + 1),    //
@@ -104,3 +104,4 @@ TEST(AdvancedUnionFind, percolation) {
     double ratio = count * 1.0 / R / C;
     EXPECT_NEAR(ratio, 0.592, 0.02);
 }
+
