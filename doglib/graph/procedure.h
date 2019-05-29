@@ -156,9 +156,8 @@ inline bool has_cycle(const DynamicGraph& graph) {
 
 inline std::vector<int> toposort_cycle(const DynamicGraph& graph) {
     auto fake_orders = toposort_acycle(graph, true);
-    auto trans_graph = transpose(graph);
-    std::reverse(fake_orders.begin(), fake_orders.end());
 
+    auto trans_graph = transpose(graph);
     ProcedureDFS dfs(trans_graph);
     std::vector<int> orders;
     dfs.set_visitor(Transfer::finish, [&](int, int v) { 
