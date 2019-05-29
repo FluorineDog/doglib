@@ -20,17 +20,17 @@ TEST(modnum, simple) {
     for(auto idx : Range(10000)) {
         (void)idx;
         ull rd = e();
-        a = a + rd;
-        b = b + rd;
+        a += rd;
+        b += rd;
         rd = e() | 1;
-        a = a * rd;
-        b = b * rd;
+        a *= rd;
+        b *= rd;
         rd = e();
         a = rd - a;
         b = rd - b;
         if(b % 2 == 0) {
-            a = a + 1;
-            b = b + 1;
+            a += 1;
+            b += 1;
         }
         rd = e() % 100000;
         a = a.pow(rd);
