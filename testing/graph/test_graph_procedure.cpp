@@ -88,40 +88,31 @@ TEST(GraphProcedure, acycle) {
     ASSERT_EQ(order.size(), 0);
 }
 
-
-// TEST(GraphProcedure, cycle) {
-//     vector<int> mp;
-//     default_random_engine e;
-//     constexpr int N = 1000;
-//     constexpr int K = 5;
-//     for(auto i : Range(N * K)) {
-//         mp.push_back(i);
-//     }
-//     // std::shuffle(mp.begin(), mp.end(), e);
-//     DynamicGraph graph(N);
-//     for(auto ig : Range(N * 10)) {
-//         unused(ig);
-//         int from = (int)(e() % (N - 1));
-//         int to = (int)(e() % (N - 1 - from)) + from + 1;
-//         assert(from < to);
-//         graph.add_edge(mp[from], mp[to]);
-//     }
-//     for(auto ig : Range(N - 1)) {
-//         int from = mp[ig];
-//         int to = mp[ig + 1];
-//         assert(from < to);
-//         graph.add_edge(from, to);
-//     }
-//     for(auto ig : Range(N * 10)) {
-//         unused(ig);
-//         int from = (int)(e() % (N - 1));
-//         int to = (int)(e() % (N - 1 - from)) + from + 1;
-//         assert(from < to);
-//         graph.add_edge(mp[from], mp[to]);
-//     }
-//     auto order = toposort_acycle(graph);
-//     ASSERT_VEC_EQ(order, mp);
-//     graph.add_edge(mp[100], mp[10]);
-//     order = toposort_acycle(graph);
-//     ASSERT_EQ(order.size(), 0);
-// }
+TEST(GraphProcedure, cycle) {
+    vector<int> mp;
+    default_random_engine e;
+    constexpr int N = 1000;
+    constexpr int K = 5;
+    for(auto i : Range(N * K)) {
+        mp.push_back(i);
+    }
+    std::shuffle(mp.begin(), mp.end(), e);
+    vector<int> remp(N * K);
+    for(auto i: Range(N * K)){
+        remp[mp[i]] = i;
+    }
+    
+    DynamicGraph graph(N * K);
+    for(auto ig : Range(N * 1000)) {
+        unused(ig);
+        int from = (int)(e() % (N));
+        int to = (int)(e() % (N - from)) + from;
+        auto a = mp[from * K + e() % K];
+        auto b = mp[to * K + e() % K];
+        graph.add_edge(a, b);
+    }
+    auto order = toposort_cycle(graph);
+    for(auto i: Range(N * K)){
+        EXPECT_EQ(remp[order[i]] / K, i / K);
+    }
+}
