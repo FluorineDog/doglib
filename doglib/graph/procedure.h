@@ -161,7 +161,9 @@ inline std::vector<int> toposort_cycle(const DynamicGraph& graph) {
 
     ProcedureDFS dfs(trans_graph);
     std::vector<int> orders;
-    dfs.set_visitor(Transfer::finish, [&](int, int v) { orders.push_back(v); });
+    dfs.set_visitor(Transfer::finish, [&](int, int v) { 
+        orders.push_back(v); 
+    });
     for(auto v: fake_orders){
         dfs.execute_at(v); 
     }

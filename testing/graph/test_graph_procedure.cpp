@@ -91,26 +91,26 @@ TEST(GraphProcedure, acycle) {
 TEST(GraphProcedure, cycle) {
     vector<int> mp;
     default_random_engine e;
-    constexpr int N = 1000;
-    constexpr int K = 5;
+    constexpr int N = 5;
+    constexpr int K = 2;
     for(auto i : Range(N * K)) {
-        mp.push_back(i);
+        mp.push_back(N * K - 1 - i);
     }
-    std::shuffle(mp.begin(), mp.end(), e);
+    // std::shuffle(mp.begin(), mp.end(), e);
     vector<int> remp(N * K);
     for(auto i : Range(N * K)) {
         remp[mp[i]] = i;
     }
-
+    ASSERT_VEC_EQ(remp, mp);
     DynamicGraph graph(N * K);
-    for(auto ig : Range(N * 10)) {
-        unused(ig);
-        int from = (int)(e() % (N));
-        int to = (int)(e() % (N - from)) + from;
-        auto a = mp[from * K + e() % K];
-        auto b = mp[to * K + e() % K];
-        graph.add_edge(a, b);
-    }
+    // for(auto ig : Range(N * 10)) {
+    //     unused(ig);
+    //     int from = (int)(e() % (N));
+    //     int to = (int)(e() % (N - from)) + from;
+    //     auto a = mp[from * K + e() % K];
+    //     auto b = mp[to * K + e() % K];
+    //     graph.add_edge(a, b);
+    // }
     for(auto ig : Range(N - 1)) {
         int from = ig;
         int to = ig + 1;
