@@ -94,14 +94,13 @@ TEST(GraphProcedure, cycle) {
     constexpr int N = 1000;
     constexpr int K = 5;
     for(auto i : Range(N * K)) {
-        mp.push_back(N * K - 1 - i);
+        mp.push_back(i);
     }
-    // std::shuffle(mp.begin(), mp.end(), e);
+    std::shuffle(mp.begin(), mp.end(), e);
     vector<int> remp(N * K);
     for(auto i : Range(N * K)) {
         remp[mp[i]] = i;
     }
-    ASSERT_VEC_EQ(remp, mp);
     DynamicGraph graph(N * K);
     for(auto ig : Range(N * 10)) {
         unused(ig);
