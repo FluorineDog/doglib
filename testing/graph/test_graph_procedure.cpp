@@ -98,12 +98,12 @@ TEST(GraphProcedure, cycle) {
     }
     std::shuffle(mp.begin(), mp.end(), e);
     vector<int> remp(N * K);
-    for(auto i: Range(N * K)){
+    for(auto i : Range(N * K)) {
         remp[mp[i]] = i;
     }
-    
+
     DynamicGraph graph(N * K);
-    for(auto ig : Range(N * 1000)) {
+    for(auto ig : Range(N * 10)) {
         unused(ig);
         int from = (int)(e() % (N));
         int to = (int)(e() % (N - from)) + from;
@@ -111,19 +111,28 @@ TEST(GraphProcedure, cycle) {
         auto b = mp[to * K + e() % K];
         graph.add_edge(a, b);
     }
-    for(auto ig: Range(N - 1)){
-        for(auto k: Range(K)){
+    for(auto ig : Range(N - 1)) {
+        int from = ig;
+        int to = ig + 1;
+        int k1 = (int)(e() % K);
+        int k2 = (int)(e() % K);
+        auto a = mp[from * K + k1];
+        auto b = mp[to * K + k2];
+        graph.add_edge(a, b);
+    }
+    for(auto ig : Range(N)) {
+        for(auto k : Range(K)) {
             int from = ig;
-            int to = ig + 1;
+            int to = ig;
             int k1 = k;
-            int k2 = (k + 1) % K; 
+            int k2 = (k + 1) % K;
             auto a = mp[from * K + k1];
             auto b = mp[to * K + k2];
             graph.add_edge(a, b);
         }
     }
     auto order = toposort_cycle(graph);
-    for(auto i: Range(N * K)){
+    for(auto i : Range(N * K)) {
         EXPECT_EQ(remp[order[i]] / K, i / K);
     }
 }
