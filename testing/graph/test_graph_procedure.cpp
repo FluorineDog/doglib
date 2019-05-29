@@ -28,8 +28,8 @@ TEST(GraphProcedure, dfs) {
     for(auto i : Range(N)) {
         mp.push_back(i);
     }
-    DynamicGraph graph(N);
     std::shuffle(mp.begin(), mp.end(), e);
+    DynamicGraph graph(N);
     for(auto ig : Range(N - 1)) {
         int from = mp[ig];
         int to = mp[ig + 1];
@@ -45,12 +45,43 @@ TEST(GraphProcedure, dfs) {
         last_discover = v;
         discover_vec.push_back(v);
     });
-    dfs.set_visitor(Transfer::finish, [&](int, int v) {
-        finish_vec.push_back(v);
-    });
+    dfs.set_visitor(Transfer::finish, [&](int, int v) { finish_vec.push_back(v); });
     dfs.execute_at(mp[0]);
     ASSERT_TRUE(succ);
-    ASSERT_VEC_EQ(discover_vec, mp);  
+    ASSERT_VEC_EQ(discover_vec, mp);
     std::reverse(finish_vec.begin(), finish_vec.end());
-    ASSERT_VEC_EQ(finish_vec, mp);  
+    ASSERT_VEC_EQ(finish_vec, mp);
+}
+
+TEST(GraphProcedure, acycle) {
+    vector<int> mp;
+    default_random_engine e;
+    constexpr int N = 1000;
+    for(auto i : Range(N)) {
+        mp.push_back(i);
+    }
+    // std::shuffle(mp.begin(), mp.end(), e);
+    DynamicGraph graph(N);
+    for(auto ig : Range(N * 100)) {
+        unused(ig);
+        int from = (int)(e() % (N - 1));
+        int to = (int)(e() % (N - 1 - from)) + from + 1;
+        assert(from < to);
+        graph.add_edge(mp[from], mp[to]);
+    }
+    for(auto ig : Range(N - 1)) {
+        int from = mp[ig];
+        int to = mp[ig + 1];
+        assert(from < to);
+        graph.add_edge(from, to);
+    }
+    for(auto ig : Range(N * 10)) {
+        unused(ig);
+        int from = (int)(e() % (N - 1));
+        int to = (int)(e() % (N - 1 - from)) + from + 1;
+        assert(from < to);
+        graph.add_edge(mp[from], mp[to]);
+    }
+    auto order = toposort_acycle(graph);
+    ASSERT_VEC_EQ(order, mp);
 }
