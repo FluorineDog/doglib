@@ -10,10 +10,6 @@ using namespace doglib::graph;
 using namespace std;
 
 
-TEST(GraphBasic, naive) {
-    EXPECT_EQ(1, 1);
-}
-
 TEST(GraphBasic, basic) {
     std::default_random_engine e;
     constexpr int N = 1000;
