@@ -144,7 +144,7 @@ inline std::vector<int> toposort_acycle(const DynamicGraph& graph,
         dfs.execute_at(v);
     }
     std::reverse(orders.begin(), orders.end());
-    if(has_cycle && ignore_cycle) {
+    if(has_cycle && !ignore_cycle) {
         return std::vector<int>();
     } else {
         return orders;
