@@ -1,1 +1,1 @@
-add_executable(test_graph test.cpp)
+dog_test(basic)
