@@ -9,9 +9,48 @@ using namespace doglib::common;
 using namespace doglib::graph;
 using namespace std;
 
-
-
 TEST(GraphProcedure, naive) {
     EXPECT_EQ(1, 1);
 }
 
+#define ASSERT_VEC_EQ(vec1, vec2)            \
+    do {                                     \
+        ASSERT_EQ(vec1.size(), vec2.size()); \
+        for(auto i : Range(vec1.size())) {   \
+            ASSERT_EQ(vec1[i], vec2[i]);     \
+        }                                    \
+    } while(false)
+
+TEST(GraphProcedure, dfs) {
+    vector<int> mp;
+    default_random_engine e;
+    constexpr int N = 1000;
+    for(auto i : Range(N)) {
+        mp.push_back(i);
+    }
+    DynamicGraph graph(N);
+    std::shuffle(mp.begin(), mp.end(), e);
+    for(auto ig : Range(N - 1)) {
+        int from = mp[ig];
+        int to = mp[ig + 1];
+        graph.add_edge(from, to);
+    }
+    vector<int> discover_vec;
+    vector<int> finish_vec;
+    int last_discover = -1;
+    bool succ = true;
+    ProcedureDFS dfs(graph);
+    dfs.set_visitor(Transfer::discover, [&](int u, int v) {
+        succ = succ && last_discover == u;
+        last_discover = v;
+        discover_vec.push_back(v);
+    });
+    dfs.set_visitor(Transfer::finish, [&](int, int v) {
+        finish_vec.push_back(v);
+    });
+    dfs.execute_at(mp[0]);
+    ASSERT_TRUE(succ);
+    ASSERT_VEC_EQ(discover_vec, mp);  
+    std::reverse(finish_vec.begin(), finish_vec.end());
+    ASSERT_VEC_EQ(finish_vec, mp);  
+}
