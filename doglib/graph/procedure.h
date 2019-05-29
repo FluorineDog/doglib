@@ -160,13 +160,39 @@ inline std::vector<int> toposort_cycle(const DynamicGraph& graph) {
     auto trans_graph = transpose(graph);
     ProcedureDFS dfs(trans_graph);
     std::vector<int> orders;
-    dfs.set_visitor(Transfer::finish, [&](int, int v) { 
-        orders.push_back(v); 
-    });
-    for(auto v: fake_orders){
-        dfs.execute_at(v); 
+    dfs.set_visitor(Transfer::finish, [&](int, int v) { orders.push_back(v); });
+    for(auto v : fake_orders) {
+        dfs.execute_at(v);
     }
     return orders;
+}
+
+inline std::pair<std::vector<int>, DynamicGraph> construct_scc(const DynamicGraph& graph) {
+    auto fake_orders = toposort_acycle(graph, true);
+    auto trans_graph = transpose(graph);
+    std::vector<int> mp(graph.n_vertex());
+
+    int node_id = -1;
+    DynamicGraph ng(0);
+    ProcedureDFS dfs(trans_graph);
+
+    dfs.set_visitor(Transfer::discover, [&](int u, int v) {
+        if(u == -1){
+            node_id = ng.new_vertex();
+        } 
+        mp[v] = node_id;
+    });
+
+    dfs.set_visitor(Transfer::revisit_finished, [&](int u, int v){
+        ng.add_edge(mp[u], mp[v]);
+    });
+
+    for(auto v : fake_orders) {
+        node_id = v;
+        dfs.execute_at(v);
+    }
+
+    return std::make_pair(mp, ng);
 }
 
 }    // namespace graph

@@ -135,3 +135,52 @@ TEST(GraphProcedure, cycle) {
         EXPECT_EQ(remp[order[i]] / K, i / K);
     }
 }
+
+TEST(GraphProcedure, scc) {
+    vector<int> mp;
+    default_random_engine e;
+    constexpr int N = 1000;
+    constexpr int K = 5;
+    for(auto i : Range(N * K)) {
+        mp.push_back(i);
+    }
+    std::shuffle(mp.begin(), mp.end(), e);
+    vector<int> remp(N * K);
+    for(auto i : Range(N * K)) {
+        remp[mp[i]] = i;
+    }
+    DynamicGraph graph(N * K);
+    for(auto ig : Range(N * 10)) {
+        unused(ig);
+        int from = (int)(e() % (N));
+        int to = (int)(e() % (N - from)) + from;
+        auto a = mp[from * K + e() % K];
+        auto b = mp[to * K + e() % K];
+        graph.add_edge(a, b);
+    }
+    for(auto ig : Range(N - 1)) {
+        int from = ig;
+        int to = ig + 1;
+        int k1 = (int)(e() % K);
+        int k2 = (int)(e() % K);
+        auto a = mp[from * K + k1];
+        auto b = mp[to * K + k2];
+        graph.add_edge(a, b);
+    }
+    for(auto ig : Range(N)) {
+        for(auto k : Range(K)) {
+            int from = ig;
+            int to = ig;
+            int k1 = k;
+            int k2 = (k + 1) % K;
+            auto a = mp[from * K + k1];
+            auto b = mp[to * K + k2];
+            graph.add_edge(a, b);
+        }
+    }
+    auto pr = construct_scc(graph);
+    auto order = pr.first;
+    for(auto i : Range(N)) {
+        EXPECT_EQ(order[mp[i]], i / K);
+    }
+}

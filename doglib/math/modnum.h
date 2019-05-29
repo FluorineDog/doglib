@@ -12,8 +12,7 @@ int clz(ull x) {
 template <ull mod, bool is_prime = false>
 class ModNum {
   public:
-    ModNum(ull x) : data(x % mod) {
-    }
+    ModNum(ull x) : data(x % mod) {}
 
     friend ModNum operator+(const ModNum& a, const ModNum& b) {
         return (a.data + b.data) % mod;
@@ -29,6 +28,19 @@ class ModNum {
 
     friend ModNum operator*(const ModNum& a, const ModNum& b) {
         return (a.data * b.data) % mod;
+    }
+
+    ModNum& operator+=(const ModNum& x) {
+        return *this = *this + x;
+    }
+    ModNum& operator-=(const ModNum& x) {
+        return *this = *this - x;
+    }
+    ModNum& operator*=(const ModNum& x) {
+        return *this = *this * x;
+    }
+    ModNum& operator/=(const ModNum& x) {
+        return *this = *this / x;
     }
 
     ModNum pow(ull exp) const {
