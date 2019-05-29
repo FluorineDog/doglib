@@ -60,7 +60,7 @@ TEST(GraphProcedure, acycle) {
     for(auto i : Range(N)) {
         mp.push_back(i);
     }
-    // std::shuffle(mp.begin(), mp.end(), e);
+    std::shuffle(mp.begin(), mp.end(), e);
     DynamicGraph graph(N);
     for(auto ig : Range(N * 10)) {
         unused(ig);
@@ -72,7 +72,6 @@ TEST(GraphProcedure, acycle) {
     for(auto ig : Range(N - 1)) {
         int from = mp[ig];
         int to = mp[ig + 1];
-        assert(from < to);
         graph.add_edge(from, to);
     }
     for(auto ig : Range(N * 10)) {
@@ -84,4 +83,45 @@ TEST(GraphProcedure, acycle) {
     }
     auto order = toposort_acycle(graph);
     ASSERT_VEC_EQ(order, mp);
+    graph.add_edge(mp[100], mp[10]);
+    order = toposort_acycle(graph);
+    ASSERT_EQ(order.size(), 0);
 }
+
+
+// TEST(GraphProcedure, cycle) {
+//     vector<int> mp;
+//     default_random_engine e;
+//     constexpr int N = 1000;
+//     constexpr int K = 5;
+//     for(auto i : Range(N * K)) {
+//         mp.push_back(i);
+//     }
+//     // std::shuffle(mp.begin(), mp.end(), e);
+//     DynamicGraph graph(N);
+//     for(auto ig : Range(N * 10)) {
+//         unused(ig);
+//         int from = (int)(e() % (N - 1));
+//         int to = (int)(e() % (N - 1 - from)) + from + 1;
+//         assert(from < to);
+//         graph.add_edge(mp[from], mp[to]);
+//     }
+//     for(auto ig : Range(N - 1)) {
+//         int from = mp[ig];
+//         int to = mp[ig + 1];
+//         assert(from < to);
+//         graph.add_edge(from, to);
+//     }
+//     for(auto ig : Range(N * 10)) {
+//         unused(ig);
+//         int from = (int)(e() % (N - 1));
+//         int to = (int)(e() % (N - 1 - from)) + from + 1;
+//         assert(from < to);
+//         graph.add_edge(mp[from], mp[to]);
+//     }
+//     auto order = toposort_acycle(graph);
+//     ASSERT_VEC_EQ(order, mp);
+//     graph.add_edge(mp[100], mp[10]);
+//     order = toposort_acycle(graph);
+//     ASSERT_EQ(order.size(), 0);
+// }
