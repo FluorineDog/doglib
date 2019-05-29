@@ -94,7 +94,6 @@ class ProcedureDFS : public ProcedureBase {
                     visit(u, v, Transfer::discover);
                     status_vec_[v] = VertexStatus::Processing;
                     todo_list_.emplace(u, ~v);
-                    todo_list_.emplace(u, v);
                     for(auto v_adj : graph.adjacent(v)) {
                         todo_list_.emplace(v, v_adj);
                     }

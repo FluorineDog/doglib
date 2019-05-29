@@ -62,7 +62,7 @@ TEST(GraphProcedure, acycle) {
     }
     // std::shuffle(mp.begin(), mp.end(), e);
     DynamicGraph graph(N);
-    for(auto ig : Range(N * 100)) {
+    for(auto ig : Range(N * 10)) {
         unused(ig);
         int from = (int)(e() % (N - 1));
         int to = (int)(e() % (N - 1 - from)) + from + 1;
