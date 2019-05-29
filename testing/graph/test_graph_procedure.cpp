@@ -111,6 +111,17 @@ TEST(GraphProcedure, cycle) {
         auto b = mp[to * K + e() % K];
         graph.add_edge(a, b);
     }
+    for(auto ig: Range(N - 1)){
+        for(auto k: Range(K)){
+            int from = ig;
+            int to = ig + 1;
+            int k1 = k;
+            int k2 = (k + 1) % K; 
+            auto a = mp[from * K + k1];
+            auto b = mp[to * K + k2];
+            graph.add_edge(a, b);
+        }
+    }
     auto order = toposort_cycle(graph);
     for(auto i: Range(N * K)){
         EXPECT_EQ(remp[order[i]] / K, i / K);
