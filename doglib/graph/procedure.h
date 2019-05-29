@@ -132,7 +132,8 @@ inline DynamicGraph transpose(const DynamicGraph& graph) {
     return trans;
 }
 
-inline std::vector<int> toposort(const DynamicGraph& graph, bool ignore_cycle = true) {
+inline std::vector<int> toposort_acycle(const DynamicGraph& graph,
+                                        bool ignore_cycle = false) {
     std::vector<int> orders;
     ProcedureDFS dfs(graph);
     bool has_cycle = false;
@@ -143,7 +144,7 @@ inline std::vector<int> toposort(const DynamicGraph& graph, bool ignore_cycle = 
         dfs.execute_at(v);
     }
     std::reverse(orders.begin(), orders.end());
-    if(has_cycle && !ignore_cycle) {
+    if(has_cycle && ignore_cycle) {
         return std::vector<int>();
     } else {
         return orders;
@@ -151,7 +152,21 @@ inline std::vector<int> toposort(const DynamicGraph& graph, bool ignore_cycle = 
 }
 
 inline bool has_cycle(const DynamicGraph& graph) {
-    return toposort(graph, false).size() == 0;
+    return toposort_acycle(graph).size() == 0;
+}
+
+inline std::vector<int> toposort_cycle(const DynamicGraph& graph) {
+    auto fake_orders = toposort_acycle(graph, true);
+    auto trans_graph = transpose(graph);
+    std::reverse(fake_orders.begin(), fake_orders.end());
+
+    ProcedureDFS dfs(trans_graph);
+    std::vector<int> orders;
+    dfs.set_visitor(Transfer::finish, [&](int, int v) { orders.push_back(v); });
+    for(auto v: fake_orders){
+        dfs.execute_at(v); 
+    }
+    return orders;
 }
 
 }    // namespace graph
