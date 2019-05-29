@@ -24,8 +24,7 @@ class Timer {
     }
 
     void reset() {
-        init_record = high_resolution_clock::now();
-        step_record = high_resolution_clock::now();
+        step_record = init_record = high_resolution_clock::now();
     }
 
   private:
