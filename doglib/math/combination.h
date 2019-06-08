@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <doglib/common/common.h>
+#include "../common/common.h"
 using namespace doglib::common;
 
 namespace doglib {
