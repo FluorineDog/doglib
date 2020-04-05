@@ -4,7 +4,6 @@
 import re
 import sys
 import os
-import pyperclip
 pattern = re.compile('^#include *"(.*)" *$')
 did = set()
 doglib_prefix = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -39,6 +38,11 @@ def pack(filename):
 root_filename = sys.argv[1]
 context = pack(root_filename)
 print(context)
+with open("sol.cpp", "w") as f: 
+    f.write(context)
+    print("==============")
+    print("file is written")
+    
 # pyperclip.copy(context)
 # paste = pyperclip.paste()
 

@@ -48,3 +48,11 @@ std::istream& operator>>(std::istream& in, std::pair<T, U>& pr) {
     pr.second = io::get<U>();
     return in;
 }
+template <typename T0, typename T1, typename T2>
+std::istream& operator>>(std::istream& in, std::tuple<T0, T1, T2>& tp) {
+    using namespace doglib;
+    std::get<0>(tp) = io::get<T0>();
+    std::get<1>(tp) = io::get<T1>();
+    std::get<2>(tp) = io::get<T2>();
+    return in;
+}
