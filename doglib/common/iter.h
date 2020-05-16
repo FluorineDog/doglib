@@ -70,12 +70,12 @@ class DataIter {
         return *this;
     }
     DataIter<T> operator+(ssize_t n) const {
-        int tmp = *this;
+        auto tmp = *this;
         tmp += (T)n;
         return tmp;
     }
     DataIter<T> operator-(ssize_t n) const {
-        int tmp = *this;
+        auto tmp = *this;
         tmp -= (T)n;
         return tmp;
     }
@@ -90,14 +90,14 @@ auto make_iter(T x) -> DataIter<T> {
 }    // namespace common
 }    // namespace doglib
 
-namespace std{
-template <typename T>
-// template <>
-struct iterator_traits< doglib::common::DataIter<T>> {
-    using difference_type = ssize_t;
-    using value_type = T;
-    using pointer = T*;
-    using reference = T&;
-    using iterator_category = std::random_access_iterator_tag;
-};
-}
+//namespace std{
+//template <typename T>
+//// template <>
+//struct iterator_traits< doglib::common::DataIter<T>> {
+//    using difference_type = ssize_t;
+//    using value_type = T;
+//    using pointer = T*;
+//    using reference = T&;
+//    using iterator_category = std::random_access_iterator_tag;
+//};
+//}

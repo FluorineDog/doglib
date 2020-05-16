@@ -2,6 +2,7 @@
 #include "doglib/common/common.h"
 #include "doglib/common/utils.h"
 #include "doglib/common/io.h"
+#include "doglib/time/timer.h"
 TEST(trivial, naive) {
     EXPECT_EQ(1, 1);
 }
@@ -23,12 +24,15 @@ TEST(DataIter, naive) {
 TEST(DataIter, BinaryFind) {
     using sll = long long;
     auto N = 1000LL * 1000LL * 1000LL * 1000LL;
+    doglib::time::Timer timer;
     auto iter = std::lower_bound(make_iter(0LL), make_iter(N), N,
-                                 [](sll x, sll y) {
+                                 [] (sll x, sll y) {
                                      return x == 0 || x < y / x;
                                  });
+    auto time = timer.get_overall_seconds();
     EXPECT_GE(*iter * *iter, N);
     EXPECT_LT((*iter - 1) * (*iter - 1), N);
+    EXPECT_LE(time, 1e-5);
 }
 
 struct Data{
