@@ -24,7 +24,9 @@ TEST(DataIter, BinaryFind) {
     using sll = long long;
     auto N = 1000LL * 1000LL * 1000LL * 1000LL;
     auto iter = std::lower_bound(make_iter(0LL), make_iter(N), N,
-                                 [](sll x, sll y) { return x * x < y; });
+                                 [](sll x, sll y) {
+                                     return x == 0 || x < y / x;
+                                 });
     EXPECT_GE(*iter * *iter, N);
     EXPECT_LT((*iter - 1) * (*iter - 1), N);
 }

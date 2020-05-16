@@ -8,6 +8,12 @@ namespace common {
 template <typename T>
 class DataIter {
   public:
+    using difference_type = ssize_t;
+    using value_type = T;
+    using pointer = T*;
+    using reference = T&;
+    using iterator_category = std::random_access_iterator_tag;
+
     static_assert(std::is_integral<T>::value, "support integer only");
     DataIter(T data) : data(data) {}
     const T& operator*() const {
@@ -31,7 +37,6 @@ class DataIter {
         --data;
         return std::move(x);
     }
-    using difference_type = ssize_t;
 
     // that's why everyone loves spaceship operator
     bool operator!=(const DataIter<T>& t) const {
