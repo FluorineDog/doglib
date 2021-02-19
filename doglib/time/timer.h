@@ -27,9 +27,10 @@ class Timer {
         step_record = init_record = high_resolution_clock::now();
     }
 
+  using TimeType = decltype(high_resolution_clock::now());
   private:
-    time_point<system_clock, nanoseconds> init_record;
-    time_point<system_clock, nanoseconds> step_record;
+    TimeType init_record;
+    TimeType step_record;
 };
 
 class TimerAdvanced : public Timer {

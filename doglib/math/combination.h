@@ -28,7 +28,7 @@ auto cmb_choose(int b, int a) -> T{
 
 template <typename T>
 auto cmb_permute(int b, int a) -> T {
-    return factorial<T>(a) / factorial<T>(a);
+    return factorial<T>(b) / factorial<T>(a);
 }
 
 }    // namespace math

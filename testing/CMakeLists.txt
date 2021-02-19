@@ -1,7 +1,6 @@
 # include(GoogleTest)
 enable_testing()
 include(GoogleTest)
-add_subdirectory("/usr/src/gtest" gtest.out)
 # find_package(GTest)
 include_directories(${GTEST_INCLUDE_DIR})
 
