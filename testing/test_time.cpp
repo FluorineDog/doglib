@@ -6,16 +6,16 @@ using namespace doglib::time;
 
 TEST(time, sleep){
     Timer timer;
-    usleep(10000);
+    usleep(100000);
     auto t = timer.get_step_seconds();
-    EXPECT_NEAR(t, 0.01, 0.0005);
+    EXPECT_NEAR(t, 0.1, 0.010);
     timer.reset();
-    usleep(10000);
+    usleep(100000);
     t = timer.get_step_seconds();
-    EXPECT_NEAR(t, 0.01, 0.0005);
-    usleep(10000);
+    EXPECT_NEAR(t, 0.1, 0.010);
+    usleep(100000);
     t = timer.get_step_seconds();
-    EXPECT_NEAR(t, 0.01, 0.0005);
+    EXPECT_NEAR(t, 0.1, 0.010);
     t = timer.get_overall_seconds();
-    EXPECT_NEAR(t, 0.02, 0.0010);
+    EXPECT_NEAR(t, 0.2, 0.020);
 }
